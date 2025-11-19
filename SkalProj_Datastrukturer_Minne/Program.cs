@@ -2,6 +2,54 @@
 
 namespace SkalProj_Datastrukturer_Minne
 {
+	/*
+		1. Hur fungerar stacken och heapen? Förklara gärna med exempel eller skiss på dess grundläggande funktion?
+
+			Stacken är ett minnesområde som används för lokala variabler och funktionsanrop. Minnet hanteras enligt datastrukturen stack (Last In – First Out).
+			När ett funktionsanrop sker så skapas en stackframe som innehåller returadress, funktionsparametrar och lokala variabler.
+			Denna stackframe pushas på stacken och när funktionen returnerar poppas den bort och minnet frigörs automatiskt.
+			Stacken har en fast storlek och kan därför orsaka stack overflow, exempelvis vid mycket djupa rekursioner.
+			Däremot erbjuder den mycket snabb, effektiv och automatisk minneshantering.
+
+			Heapen är ett minnesområde som används för dynamisk lagring och där lagras objekt och variabler av referenstyp eller som behöver leva längre än ett enskilt funktionsanrop.
+			Till skillnad från stacken har heapen ingen fast storlek utan kan växa dynamiskt beroende på hur mycket tillgängliga minne det finns.
+			Minneshanteringen är mer komplex och långsammare än i stacken eftersom data inte lagras i en bestämd ordning och allokering kräver mer arbete.
+			Minnet på heapen frigörs inte automatiskt när en funktion avslutas utan hanteras antingen av en garbage collector (som i C# och Java)
+			eller manuellt av programmeraren som i t.ex C.
+
+		2. Vad är Value Types respektive Reference Types och vad skiljer dem åt?
+
+			Hos en värdetyp innehåller själva variablen datan direkt. Exempel på detta är enkla typer som int, float, bool, char och struct.
+			En referenstyp innehåller istället en referens (en minnesadress) som pekar på var datan ligger på heapen. Exempel är klasser, string, arrayer, listor och andra objekttyper.
+
+			För referenstyper kan två variabler peka på samma objekt vilket innebär att om du ändrar objektet via den ena variabeln så påverkas den andra också.
+			Hos värdetyper har däremot har varje variabel sin egen kopia av datan vilket betyder att ändringar på en variabel inte påverkar någon annan.
+
+		3. Följande metoder (se bild nedan) genererar olika svar. Den första returnerar 3, den andra returnerar 4, varför?
+
+			ReturnValue()
+
+			Det som kan förvirra är new int() som man tänker skapar nya objekt(referenstyp).
+
+					int x = new int();
+
+					https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions#12817-the-new-operator
+					"The new operator implies creation of an instance of a type, but does not necessarily imply allocation of memory.
+					In particular, instances of value types require no additional memory beyond the variables in which they reside,
+					and no allocations occur when new is used to create instances of value types."
+
+				Alltså skapas en vanlig System.Int32 som är av value type och y tilldelas en kopia av x's värde och därför returnerar ReturnValue() 3.
+
+			ReturnValue2()
+
+				x är av referenstyp till ett MyInt objekt.
+				Efter y=x så pekar y på samma objekt som x
+				y.MyValue = 4 ändrar värdet på samma objekt som x refererar till
+
+				Därför returnerar funktionen värdet 4.
+
+	*/
+
 	internal class Program
 	{
 		/// <summary>

@@ -327,10 +327,10 @@ namespace SkalProj_Datastrukturer_Minne
 
 			while (true)
 			{
-				Console.WriteLine("Enter word to add, del to remove or quit");
+				Console.WriteLine("Enter add, del och quit: ");
 
 				Console.Write("Input: ");
-				string input = Console.ReadLine();
+				string? input = Console.ReadLine();
 
 				if (input == "quit")
 				{
@@ -341,15 +341,28 @@ namespace SkalProj_Datastrukturer_Minne
 				{
 					case "del":
 						if (theQueue.Count > 0)
-							theQueue.Dequeue();
+						{
+							string removed = theQueue.Dequeue();
+							Console.WriteLine($"Removed {removed}");
+						}
+
+						break;
+
+					case "add":
+						Console.Write("Enter world:");
+						string? word = Console.ReadLine();
+						if (string.IsNullOrWhiteSpace(word))
+							continue;
+						theQueue.Enqueue(word);
+						Console.WriteLine($"Added {word}");
 						break;
 
 					default:
-						theQueue.Enqueue(input);
+						Console.WriteLine("Invalid command.");
 						break;
 				}
 
-				Console.WriteLine("First in -> [" + string.Join(", ", theQueue) + "] <- Last in");
+				Console.WriteLine(string.Join(", ", theQueue));
 				Console.WriteLine();
 			}
 		}
@@ -377,7 +390,12 @@ namespace SkalProj_Datastrukturer_Minne
 			while (true)
 			{
 				Console.Write("Enter: push <value>, or pop to remove, or quit: ");
-				string input = Console.ReadLine();
+				string? input = Console.ReadLine();
+				if (string.IsNullOrWhiteSpace(input))
+				{
+					continue;
+				}
+
 				if (input == "quit") break;
 
 				string[] parts = input.Split(" ");
@@ -385,11 +403,19 @@ namespace SkalProj_Datastrukturer_Minne
 				switch (parts[0])
 				{
 					case "push":
-						theStack.Push(parts[1]);
+						if (parts.Length > 1)
+						{
+							theStack.Push(parts[1]);
+							Console.WriteLine($"Pushed {parts[1]} to the stack");
+						}
 						break;
 
 					case "pop":
-						theStack.Pop();
+						if (theStack.Count != 0)
+						{
+							string removed = theStack.Pop();
+							Console.WriteLine($"Popped {removed}");
+						}
 						break;
 
 					default:
@@ -459,7 +485,13 @@ namespace SkalProj_Datastrukturer_Minne
 			*/
 
 			Console.Write("Enter a string: ");
-			String input = Console.ReadLine();
+			String? input = Console.ReadLine();
+
+			if (string.IsNullOrWhiteSpace(input))
+			{
+				return;
+			}
+
 			if (CheckParanthesis(input))
 			{
 				Console.WriteLine("Correct");

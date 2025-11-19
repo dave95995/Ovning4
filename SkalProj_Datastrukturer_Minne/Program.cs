@@ -253,7 +253,6 @@ namespace SkalProj_Datastrukturer_Minne
              * Make sure to look at the stack after pushing and and poping to see how it behaves
             */
 
-
 			Stack<string> theStack = new Stack<string>();
 			while (true)
 			{
@@ -281,6 +280,7 @@ namespace SkalProj_Datastrukturer_Minne
 				Console.WriteLine("Last in -> [" + string.Join(", ", theStack) + "] <- First in");
 			}
 		}
+
 		/// <summary>
 		/// Return a string reversed using a stack
 		/// </summary>
@@ -300,15 +300,96 @@ namespace SkalProj_Datastrukturer_Minne
 			return result;
 		}
 
-
-
 		private static void CheckParanthesis()
 		{
+			/*
+				1.Skapa med hjälp av er nya kunskap funktionalitet för att kontrollera en välformad
+				sträng på papper.Du ska använda dig av någon eller några av de datastrukturer vi
+				precis gått igenom.Vilken datastruktur använder du?
+
+				Jag använder en stack:
+						Öppningsparenteser läggs på stacken(push)
+						Hittar jag en stängande parentes måste den matcha den senast tillagda öppnande parentesen(pop)
+
+			*/
+
+
 			/*
              * Use this method to check if the paranthesis in a string is Correct or incorrect.
              * Example of correct: (()), {}, [({})],  List<int> list = new List<int>() { 1, 2, 3, 4 };
              * Example of incorrect: (()]), [), {[()}],  List<int> list = new List<int>() { 1, 2, 3, 4 );
              */
+
+			/*
+			string[] tests = {
+							"(())",
+							"{}",
+							"[({})]",
+							"List<int> list = new List<int>() { 1, 2, 3, 4 };",
+							"(()])",
+							"[)",
+							"{[()}]",
+							"List<int> list = new List<int>() { 1, 2, 3, 4 );",
+						};
+
+			foreach (string test in tests)
+			{
+				bool result = CheckParanthesis(test);
+				Console.WriteLine($"{result}\t{test}");
+			}
+			*/
+
+			Console.Write("Enter a string: ");
+			String input = Console.ReadLine();
+			if (CheckParanthesis(input))
+			{
+				Console.WriteLine("Correct");
+			}
+			else
+			{
+				Console.WriteLine("Incorrect");
+			}
+		}
+
+		private static bool CheckParanthesis(string input)
+		{
+			// Här är ordningen viktig för vi jämnför index senare
+			string leftParens = "({[";
+			string rightParens = ")}]";
+
+			Stack<char> order = new Stack<char>();
+
+			foreach (char ch in input)
+			{
+				// Öppningsparanteser
+				int leftIndex = leftParens.IndexOf(ch);
+				if (leftIndex != -1)
+				{
+					order.Push(ch);
+					continue;
+				}
+
+				// Stängningsparanteser
+				int rightIndex = rightParens.IndexOf(ch);
+				if (rightIndex != -1)
+				{
+					// Ett öppningstecken måste komma innan stäningstecken
+					if (order.Count == 0)
+						return false;
+
+					// Öppningstecken
+					char top = order.Pop();
+
+					leftIndex = leftParens.IndexOf(top);
+					// Motsvarande stängningstecken
+					if (leftIndex != rightIndex)
+					{
+						return false;
+					}
+				}
+			}
+			// Det får inte finnas några ostängda tecken kvar
+			return order.Count == 0;
 		}
 	}
 }

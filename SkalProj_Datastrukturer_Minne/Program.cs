@@ -65,6 +65,7 @@ namespace SkalProj_Datastrukturer_Minne
 					+ "\n2. Examine a Queue"
 					+ "\n3. Examine a Stack"
 					+ "\n4. CheckParenthesis"
+					+ "\n5. CheckRekursion"
 					+ "\n0. Exit the application");
 				char input = ' '; //Creates the character input to be used with the switch-case below.
 				try
@@ -93,10 +94,10 @@ namespace SkalProj_Datastrukturer_Minne
 					case '4':
 						CheckParanthesis();
 						break;
-					/*
-                     * Extend the menu to include the recursive
-                     * and iterative exercises.
-                     */
+					case '5':
+						CheckRekursion();
+						break;
+
 					case '0':
 						Environment.Exit(0);
 						break;
@@ -106,6 +107,34 @@ namespace SkalProj_Datastrukturer_Minne
 						break;
 				}
 			}
+		}
+		private static int RecursiveEven(int n)
+		{
+			// Det första jämna talet är 2
+			if (n == 1)
+			{
+				return 2;
+			}
+			return (RecursiveEven(n - 1) + 2);
+		}
+
+		private static int Fib(int n)
+		{
+			// Basfallen
+			if (n <= 0) return 0;
+			if (n == 1) return 1;
+			return Fib(n - 1) + Fib(n - 2);
+		}
+
+
+		private static void CheckRekursion()
+		{
+			Console.Write("Vilket fibonaccital? ");
+			if (int.TryParse(Console.ReadLine() , out int n))
+			{
+				Console.WriteLine("Svar: " + Fib(n));
+			}
+			
 		}
 
 		/// <summary>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 
 namespace SkalProj_Datastrukturer_Minne
 {
@@ -66,6 +67,8 @@ namespace SkalProj_Datastrukturer_Minne
 					+ "\n3. Examine a Stack"
 					+ "\n4. CheckParenthesis"
 					+ "\n5. CheckRekursion"
+					+ "\n6. CheckIteration"
+
 					+ "\n0. Exit the application");
 				char input = ' '; //Creates the character input to be used with the switch-case below.
 				try
@@ -94,8 +97,13 @@ namespace SkalProj_Datastrukturer_Minne
 					case '4':
 						CheckParanthesis();
 						break;
+
 					case '5':
 						CheckRekursion();
+						break;
+
+					case '6':
+						CheckIteration();
 						break;
 
 					case '0':
@@ -108,8 +116,74 @@ namespace SkalProj_Datastrukturer_Minne
 				}
 			}
 		}
+
+		private static int IterativeEven(int n)
+		{
+			if (n < 0)
+			{
+				throw new ArgumentOutOfRangeException(nameof(n), "Värdet måste vara positivt");
+			}
+
+			int result = 2;
+			for (int i = 0; i < n - 1; i++)
+			{
+				result += 2;
+			}
+			return result;
+		}
+
+		private static int IterativFib(int n)
+		{
+			if (n < 0)
+			{
+				throw new ArgumentOutOfRangeException(nameof(n), "Värdet måste vara positivt");
+			}
+
+			if (n == 0) return 0;
+			if (n == 1) return 1;
+			int a = 0;
+			int b = 1;
+			for (int i = 2; i <= n; i++)
+			{
+				int value = a + b;
+				a = b;
+				b = value;
+			}
+			return b;
+		}
+
+		private static void CheckIteration()
+		{
+			/*
+			Utgå ifrån era nyvunna kunskaper om iteration, rekursion och minneshantering.
+			Vilken av ovanstående funktioner är mest minnesvänlig och varför?
+
+				De två iterativa funktionerna är mest minnesvänliga eftersom de använder en konstant mängd minne.
+				Hos de rekursiva funktionerna växer minnesåtgången med n vilket innebär att de har linjär minneskomplexitet.
+
+				När det gäller tidskomplexitet är alla funktioner linjära utom den rekursiva Fibonacci-funktionen som har exponentiell tidskomplexitet.
+
+				Samtliga funktioner arbetar dock enbart på stacken.
+
+				Rekursiva funktioner är ofta enklare att skriva men de kräver mer minne eftersom varje anrop läggs på stacken.
+				Iterativa funktioner är däremot generellt mer effektiva och mer minnesvänliga.
+
+			*/
+
+			Console.Write("Vilket fibonaccital? ");
+			if (int.TryParse(Console.ReadLine(), out int n))
+			{
+				Console.WriteLine("Svar: " + IterativFib(n));
+			}
+		}
+
 		private static int RecursiveEven(int n)
 		{
+			if (n <= 0)
+			{
+				throw new ArgumentOutOfRangeException(nameof(n), "Värdet måste vara större än noll.");
+			}
+
 			// Det första jämna talet är 2
 			if (n == 1)
 			{
@@ -120,21 +194,24 @@ namespace SkalProj_Datastrukturer_Minne
 
 		private static int Fib(int n)
 		{
+			if (n < 0)
+			{
+				throw new ArgumentOutOfRangeException(nameof(n), "Värdet måste vara positivt");
+			}
+
 			// Basfallen
-			if (n <= 0) return 0;
+			if (n == 0) return 0;
 			if (n == 1) return 1;
 			return Fib(n - 1) + Fib(n - 2);
 		}
 
-
 		private static void CheckRekursion()
 		{
 			Console.Write("Vilket fibonaccital? ");
-			if (int.TryParse(Console.ReadLine() , out int n))
+			if (int.TryParse(Console.ReadLine(), out int n))
 			{
 				Console.WriteLine("Svar: " + Fib(n));
 			}
-			
 		}
 
 		/// <summary>
@@ -190,7 +267,12 @@ namespace SkalProj_Datastrukturer_Minne
 			while (true)
 			{
 				Console.Write("+<word> or -<word> or quit: ");
-				string input = Console.ReadLine();
+				string? input = Console.ReadLine();
+
+				if (string.IsNullOrWhiteSpace(input) || input.Length < 2)
+				{
+					continue;
+				}
 
 				if (input == "quit")
 				{
@@ -204,10 +286,19 @@ namespace SkalProj_Datastrukturer_Minne
 				{
 					case '+':
 						theList.Add(value);
+						Console.WriteLine($"Added \"{value}\".");
 						break;
 
 					case '-':
-						theList.Remove(value);
+						if (theList.Remove(value) == false)
+						{
+							Console.WriteLine($"{value} not found in list");
+						}
+						else
+						{
+							Console.WriteLine($"Removed {value}");
+						}
+
 						break;
 
 					default:
@@ -341,7 +432,6 @@ namespace SkalProj_Datastrukturer_Minne
 						Hittar jag en stängande parentes måste den matcha den senast tillagda öppnande parentesen(pop)
 
 			*/
-
 
 			/*
              * Use this method to check if the paranthesis in a string is Correct or incorrect.

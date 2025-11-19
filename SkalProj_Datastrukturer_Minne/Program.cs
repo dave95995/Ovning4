@@ -113,10 +113,8 @@ namespace SkalProj_Datastrukturer_Minne
 		/// </summary>
 		private static void ExamineList()
 		{
-
 			/*
-			 
-			
+
 			2. När ökar listans kapacitet? (Alltså den underliggande arrayens storlek)
 
 				När Count når Capacity, alltså när listan är full.
@@ -147,7 +145,6 @@ namespace SkalProj_Datastrukturer_Minne
 				När jag modellerar ett 2d grid med rader och kolumner är det lättare att använda vanliga arrayer.
 
 			*/
-
 
 			/*
              * Loop this method untill the user inputs something to exit to main menue.
@@ -205,6 +202,36 @@ namespace SkalProj_Datastrukturer_Minne
              * Create a switch with cases to enqueue items or dequeue items
              * Make sure to look at the queue after Enqueueing and Dequeueing to see how it behaves
             */
+
+			Queue<string> theQueue = new Queue<string>();
+
+			while (true)
+			{
+				Console.WriteLine("Enter word to add, del to remove or quit");
+
+				Console.Write("Input: ");
+				string input = Console.ReadLine();
+
+				if (input == "quit")
+				{
+					break;
+				}
+
+				switch (input)
+				{
+					case "del":
+						if (theQueue.Count > 0)
+							theQueue.Dequeue();
+						break;
+
+					default:
+						theQueue.Enqueue(input);
+						break;
+				}
+
+				Console.WriteLine("First in -> [" + string.Join(", ", theQueue) + "] <- Last in");
+				Console.WriteLine();
+			}
 		}
 
 		/// <summary>
@@ -213,11 +240,67 @@ namespace SkalProj_Datastrukturer_Minne
 		private static void ExamineStack()
 		{
 			/*
+
+			1. Simulera ännu en gång ICA-kön på papper. Denna gång med en stack. Varför är det inte så smart att använda en stack i det här fallet?
+
+			För då kommer den som senaste anlände till kön att få gå först.
+
+			*/
+
+			/*
              * Loop this method until the user inputs something to exit to main menue.
              * Create a switch with cases to push or pop items
              * Make sure to look at the stack after pushing and and poping to see how it behaves
             */
+
+
+			Stack<string> theStack = new Stack<string>();
+			while (true)
+			{
+				Console.Write("Enter: push <value>, or pop to remove, or quit: ");
+				string input = Console.ReadLine();
+				if (input == "quit") break;
+
+				string[] parts = input.Split(" ");
+
+				switch (parts[0])
+				{
+					case "push":
+						theStack.Push(parts[1]);
+						break;
+
+					case "pop":
+						theStack.Pop();
+						break;
+
+					default:
+						Console.WriteLine("Invalid command");
+						break;
+				}
+
+				Console.WriteLine("Last in -> [" + string.Join(", ", theStack) + "] <- First in");
+			}
 		}
+		/// <summary>
+		/// Return a string reversed using a stack
+		/// </summary>
+		public static String ReverseText(String text)
+		{
+			String result = string.Empty;
+			Stack<char> theStack = new Stack<char>();
+			foreach (char c in text)
+			{
+				theStack.Push(c);
+			}
+			// Sist in blir först ut.
+			while (theStack.Count > 0)
+			{
+				result += theStack.Pop();
+			}
+			return result;
+		}
+
+
 
 		private static void CheckParanthesis()
 		{

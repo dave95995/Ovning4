@@ -113,6 +113,42 @@ namespace SkalProj_Datastrukturer_Minne
 		/// </summary>
 		private static void ExamineList()
 		{
+
+			/*
+			 
+			
+			2. När ökar listans kapacitet? (Alltså den underliggande arrayens storlek)
+
+				När Count når Capacity, alltså när listan är full.
+
+			3. Med hur mycket ökar kapaciteten?
+
+				Den dubbleras. (Från List.cs)
+					int newCapacity = _items.Length == 0 ? DefaultCapacity : 2 * _items.Length;
+
+			4. Varför ökar inte listans kapacitet i samma takt som element läggs till?
+
+				För att öka listans kapacitet måste en ny array skapas och
+				till den nya arrayen måste alla element kopieras från den gamla.
+				Detta har tidskomplexiteten O(n) och det är något man vill undvika göra ofta och det är därför
+				listan växer i större steg.
+
+			5. Minskar kapaciteten när element tas bort ur listan?
+
+				Nej, detta beror på samma sak som ovan, man vill inte kopiera i onödan.
+
+			6. När är det då fördelaktigt att använda en egendefinierad array istället för en lista?
+
+				När man vet hur stor arrayen ska vara från start och att storleken inte ändras.
+				När minnet är väldigt begränsat, dels tar objektet mer minne än en lista men också för listans
+				Capacity växer exponentiellt.
+				Det går snabbare att hantera en array direkt än via en klass.
+
+				När jag modellerar ett 2d grid med rader och kolumner är det lättare att använda vanliga arrayer.
+
+			*/
+
+
 			/*
              * Loop this method untill the user inputs something to exit to main menue.
              * Create a switch statement with cases '+' and '-'
@@ -123,12 +159,40 @@ namespace SkalProj_Datastrukturer_Minne
              * Below you can see some inspirational code to begin working.
             */
 
-			//List<string> theList = new List<string>();
-			//string input = Console.ReadLine();
-			//char nav = input[0];
-			//string value = input.substring(1);
+			List<string> theList = new List<string>();
 
-			//switch(nav){...}
+			while (true)
+			{
+				Console.Write("+<word> or -<word> or quit: ");
+				string input = Console.ReadLine();
+
+				if (input == "quit")
+				{
+					break;
+				}
+
+				char nav = input[0];
+				string value = input.Substring(1);
+
+				switch (nav)
+				{
+					case '+':
+						theList.Add(value);
+						break;
+
+					case '-':
+						theList.Remove(value);
+						break;
+
+					default:
+						Console.WriteLine("Bad input");
+						break;
+				}
+
+				Console.WriteLine("List: [" + string.Join(", ", theList) + "]");
+				Console.WriteLine($"Count: {theList.Count}, Capacity: {theList.Capacity}");
+				Console.WriteLine();
+			}
 		}
 
 		/// <summary>
